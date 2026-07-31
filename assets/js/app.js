@@ -170,6 +170,7 @@
       activateTab(tab);
       if (tab === "ranking") loadRanking();
       if (tab === "pecas") renderPecas();
+      if (tab === "duvidas") renderDuvidas();
     });
   });
 
@@ -232,6 +233,43 @@
     });
     flush();
     return out.join("");
+  }
+
+  /* ---------- Dúvidas e Sugestões ---------- */
+  function renderDuvidas() {
+    var box = document.getElementById("duvidasBox");
+    box.innerHTML =
+      "<p class='app__lead'>Tem uma dúvida, encontrou um problema ou quer sugerir algo? Escreva abaixo — eu leio todas as mensagens.</p>" +
+      "<textarea id='fbTexto' class='fb-texto' rows='5' placeholder='Sua mensagem…'></textarea>" +
+      "<button id='fbEnviar' class='btn btn--solid'>Enviar</button>" +
+      "<p id='fbMsg' class='app__msg'></p>" +
+      "<p class='peca-nota'>Prefere falar direto? Escreva para <a class='app__link' href='mailto:william@wmazza.com'>william@wmazza.com</a>.</p>" +
+      "<div id='fbHist'></div>";
+    document.getElementById("fbEnviar").addEventListener("click", enviarFeedback);
+    carregarMinhasMensagens();
+  }
+  async function enviarFeedback() {
+    var t = document.getElementById("fbTexto");
+    var m = document.getElementById("fbMsg");
+    var msg = (t.value || "").trim();
+    if (msg.length < 3) { m.textContent = "Escreva uma mensagem um pouco maior."; return; }
+    m.textContent = "Enviando…";
+    var r = await sb.rpc("enviar_feedback", { p_mensagem: msg });
+    if (r.error) { m.textContent = "Erro: " + r.error.message; return; }
+    t.value = "";
+    m.textContent = "Mensagem enviada, Irmão. Obrigado! 🔺";
+    carregarMinhasMensagens();
+  }
+  async function carregarMinhasMensagens() {
+    var hist = document.getElementById("fbHist");
+    if (!hist) return;
+    var r = await sb.rpc("minhas_mensagens");
+    if (r.error || !r.data || !r.data.length) { hist.innerHTML = ""; return; }
+    hist.innerHTML = "<p class='app__subtitle' style='font-size:1rem'>Suas mensagens</p>" +
+      r.data.map(function (x) {
+        var d = (x.criado_em || "").slice(0, 10);
+        return "<div class='fb-item'><span class='fb-data'>" + esc(d) + "</span><p>" + esc(x.mensagem) + "</p></div>";
+      }).join("");
   }
 
   async function renderEscada() {

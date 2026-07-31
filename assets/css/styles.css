@@ -330,6 +330,20 @@ a { color: inherit; text-decoration: none; }
 .app__cpf input { width: 100%; padding: 0.8rem 0.9rem; border: 1.5px solid var(--gray-line); border-radius: var(--radius); font-family: var(--font-body); font-size: 1rem; background: var(--paper); color: var(--ink); }
 .app__cpf input:focus { outline: none; border-color: var(--gold); }
 
+.fb-texto { width: 100%; padding: 0.8rem 0.9rem; border: 1.5px solid var(--gray-line); border-radius: var(--radius); font-family: var(--font-body); font-size: 1rem; background: var(--paper); color: var(--ink); resize: vertical; margin-bottom: 0.8rem; }
+.fb-texto:focus { outline: none; border-color: var(--gold); }
+.fb-item { border-top: 1px solid var(--gray-line); padding: 0.7rem 0; }
+.fb-data { font-size: 0.72rem; color: var(--gray); }
+.fb-item p { margin: 0.2rem 0 0; color: var(--ink-soft); font-size: 0.92rem; }
+
+/* ===== Páginas legais ===== */
+.legal__title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.4rem); margin: 0.3rem 0 0.5rem; }
+.legal__date { color: var(--gray); font-size: 0.9rem; margin-bottom: 1.8rem; }
+.legal h2 { font-family: var(--font-display); font-size: 1.2rem; margin: 1.8rem 0 0.6rem; }
+.legal p { color: var(--ink-soft); margin: 0 0 1rem; }
+.footer__legal a { color: #9a9a9a; border-bottom: 1px solid #555; }
+.footer__legal a:hover { color: #fff; border-color: #fff; }
+
 .rankrow { display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 0.2rem; border-bottom: 1px solid var(--gray-line); }
 .rankrow__pos { font-family: var(--font-display); color: var(--gold); font-weight: 600; min-width: 2.6ch; }
 .rankrow__main { flex: 1; min-width: 0; }
