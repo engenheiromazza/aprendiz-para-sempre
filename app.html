@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entrar — Aprendiz para Sempre</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23111'/%3E%3Crect width='50' height='50' fill='%23fff'/%3E%3Crect x='50' y='50' width='50' height='50' fill='%23fff'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="brand">
+        <span class="brand__mark" aria-hidden="true"></span>
+        <span class="brand__name">Aprendiz<span class="brand__thin"> para Sempre</span></span>
+      </a>
+      <button id="logoutBtn" class="btn btn--ghost btn--sm" style="display:none">Sair</button>
+    </div>
+  </header>
+
+  <main class="container app">
+
+    <!-- LOADING -->
+    <section id="loading" class="app__state">
+      <div class="app__card center">
+        <p class="app__msg">Abrindo a porta do Templo…</p>
+      </div>
+    </section>
+
+    <!-- LOGIN -->
+    <section id="view-login" class="app__state" hidden>
+      <div class="app__card">
+        <p class="eyebrow">A Porta do Templo</p>
+        <h1 class="app__title">Entre, Irmão</h1>
+        <p class="app__lead">Este espaço é reservado aos maçons. Identifique-se para prosseguir.</p>
+        <form id="pwForm" class="app__form" onsubmit="return false">
+          <input type="email" id="pwEmail" class="app__input" placeholder="seu@email.com" required autocomplete="email" />
+          <input type="password" id="pwPass" class="app__input" placeholder="senha (mín. 6 caracteres)" required minlength="6" autocomplete="current-password" />
+          <div class="app__row">
+            <button type="button" id="pwLoginBtn" class="btn btn--solid">Entrar</button>
+            <button type="button" id="pwSignupBtn" class="btn btn--ghost">Criar conta</button>
+          </div>
+        </form>
+        <p class="app__hint" style="margin-top:0.6rem">Primeira vez? Clique em <strong>Criar conta</strong>. Você poderá trocar a senha depois.</p>
+        <p id="loginMsg" class="app__msg"></p>
+      </div>
+    </section>
+
+    <!-- TELHAMENTO -->
+    <section id="view-telhamento" class="app__state" hidden>
+      <div class="app__card app__card--wide">
+        <p class="eyebrow">Telhamento</p>
+        <h1 class="app__title">O Guarda do Templo</h1>
+        <p class="app__lead">Responda para confirmarmos que você é da Ordem. Cada pergunta tem 30 segundos.</p>
+        <div id="telhamentoBox"></div>
+      </div>
+    </section>
+
+    <!-- TELHAMENTO FALHOU -->
+    <section id="view-telhamento-fail" class="app__state" hidden>
+      <div class="app__card">
+        <p class="eyebrow">Guarda do Templo</p>
+        <h1 class="app__title">Acesso não liberado</h1>
+        <p class="app__lead">
+          Este espaço é reservado aos Irmãos. Se você é maçom, envie um e-mail para
+          <a href="mailto:william@wmazza.com" class="app__link">william@wmazza.com</a>
+          com a foto da sua carteirinha em anexo, que eu libero seu acesso pessoalmente.
+        </p>
+        <button id="telhamentoRetry" class="btn btn--ghost">Tentar novamente</button>
+      </div>
+    </section>
+
+    <!-- CADASTRO -->
+    <section id="view-cadastro" class="app__state" hidden>
+      <div class="app__card app__card--wide">
+        <p class="eyebrow">Cadastro</p>
+        <h1 class="app__title">Seus dados de Obreiro</h1>
+        <p class="app__lead">Para seu registro e para os rankings. Leva um minuto.</p>
+        <form id="cadastroForm" class="app__form">
+          <label>Nome completo
+            <input type="text" name="nome_completo" required />
+          </label>
+          <label>Nome simbólico <span class="app__hint">(é o que aparece no ranking)</span>
+            <input type="text" name="nome_simbolico" required />
+          </label>
+
+          <label>Data de nascimento
+            <input type="date" name="data_nascimento" required />
+          </label>
+
+          <fieldset>
+            <legend>Potência</legend>
+            <label class="opt"><input type="radio" name="potencia" value="GOB" required /> <span>GOB — Grande Oriente do Brasil</span></label>
+            <label class="opt"><input type="radio" name="potencia" value="Grandes Lojas" /> <span>Grandes Lojas</span></label>
+            <label class="opt"><input type="radio" name="potencia" value="Outra" /> <span>Outra</span></label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Rito</legend>
+            <label class="opt"><input type="radio" name="rito" value="Rito Escocês Antigo e Aceito (REAA)" required /> <span>Rito Escocês Antigo e Aceito (REAA)</span></label>
+            <label class="opt"><input type="radio" name="rito" value="Rito de York" /> <span>Rito de York</span></label>
+            <label class="opt"><input type="radio" name="rito" value="Rito Adonhiramita" /> <span>Rito Adonhiramita</span></label>
+            <label class="opt"><input type="radio" name="rito" value="Rito Brasileiro" /> <span>Rito Brasileiro</span></label>
+            <label class="opt"><input type="radio" name="rito" value="Rito Moderno (Francês)" /> <span>Rito Moderno (Francês)</span></label>
+            <label class="opt"><input type="radio" name="rito" value="Rito Schröder" /> <span>Rito Schröder</span></label>
+            <label class="opt"><input type="radio" name="rito" value="Rito de Emulação" /> <span>Rito de Emulação</span></label>
+            <label class="opt"><input type="radio" name="rito" value="Rito Escocês Retificado" /> <span>Rito Escocês Retificado</span></label>
+          </fieldset>
+
+          <div class="app__row">
+            <label>Oriente (cidade)
+              <input type="text" name="oriente_cidade" required />
+            </label>
+            <label>Estado (UF)
+              <select name="estado_uf" required>
+                <option value="" disabled selected>UF</option>
+                <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+                <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+                <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+                <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+                <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+                <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+                <option>SP</option><option>SE</option><option>TO</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="app__row">
+            <label>Loja (nome)
+              <input type="text" name="loja_nome" />
+            </label>
+            <label>Nº da Loja
+              <input type="number" name="loja_numero" min="0" />
+            </label>
+          </div>
+
+          <fieldset>
+            <legend>Seu grau atual</legend>
+            <label class="opt"><input type="radio" name="grau" value="aprendiz" required /> <span>Aprendiz</span></label>
+            <label class="opt"><input type="radio" name="grau" value="companheiro" /> <span>Companheiro</span></label>
+            <label class="opt"><input type="radio" name="grau" value="mestre" /> <span>Mestre</span></label>
+          </fieldset>
+
+          <label>Profissão
+            <input type="text" name="profissao" required />
+          </label>
+
+          <label class="app__check"><input type="checkbox" name="opt_in_ranking" /> <span>Quero aparecer no ranking dos obreiros (com meu nome simbólico)</span></label>
+
+          <button type="submit" class="btn btn--solid btn-full">Salvar e entrar</button>
+          <p id="cadastroMsg" class="app__msg"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- PAINEL / HUB (abas: Escada · Ranking · Peças) -->
+    <section id="view-painel" class="app__state" hidden>
+      <div class="app__card app__card--wide">
+        <p class="eyebrow">Sua jornada</p>
+        <h1 class="app__title">Salve, <span id="painelNome">Irmão</span>!</h1>
+
+        <nav class="hubtabs">
+          <button type="button" class="hubtab is-active" data-tab="escada">Escada</button>
+          <button type="button" class="hubtab" data-tab="ranking">Ranking</button>
+          <button type="button" class="hubtab" data-tab="pecas">Peças de Arquitetura</button>
+        </nav>
+
+        <div id="tab-escada" class="hubpanel">
+          <p id="escadaInfo" class="app__lead"></p>
+          <div id="escadaBox" class="escada-app"></div>
+        </div>
+
+        <div id="tab-ranking" class="hubpanel" hidden>
+          <div id="rankingBox"></div>
+        </div>
+
+        <div id="tab-pecas" class="hubpanel" hidden>
+          <div id="pecasBox"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="view-quiz" class="app__state" hidden>
+      <div class="app__card app__card--wide">
+        <p class="eyebrow" id="quizDegrauLabel">Degrau</p>
+        <div id="quizBox"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="assets/js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

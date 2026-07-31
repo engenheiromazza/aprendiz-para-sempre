@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aprendiz para Sempre — Teste seus conhecimentos sobre Maçonaria</title>
+  <meta name="description" content="Teste e aprofunde seus conhecimentos sobre Maçonaria, um degrau de cada vez. Projeto pessoal para Irmãos, dedicado ao estudo da Maçonaria Simbólica." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23111'/%3E%3Crect width='50' height='50' fill='%23fff'/%3E%3Crect x='50' y='50' width='50' height='50' fill='%23fff'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <!-- ===== NAV ===== -->
+  <header class="nav" id="top">
+    <div class="container nav__inner">
+      <a href="#top" class="brand" aria-label="Aprendiz para Sempre — início">
+        <span class="brand__mark" aria-hidden="true"></span>
+        <span class="brand__name">Aprendiz<span class="brand__thin"> para Sempre</span></span>
+      </a>
+
+      <nav class="nav__links" id="navLinks">
+        <a href="#escada">A Escada</a>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#planos">Planos</a>
+        <a href="#sobre">Sobre</a>
+        <a href="app.html" class="btn btn--solid btn--sm">Entrar</a>
+      </nav>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero__mosaic" aria-hidden="true"></div>
+    <div class="container hero__inner">
+      <div class="hero__text">
+        <p class="kicker">Conhecimentos básicos &middot; 1º Grau (Aprendiz) &middot; REAA</p>
+        <h1 class="hero__title">Aprendiz<br /><em>para Sempre</em></h1>
+        <p class="hero__lead">
+          Teste e aprofunde os <strong>conhecimentos básicos da Maçonaria</strong> —
+          os fundamentos do 1º Grau, o do Aprendiz Maçom — um degrau de cada vez.
+        </p>
+        <div class="hero__actions">
+          <a href="app.html" class="btn btn--solid">Entrar</a>
+          <a href="#como-funciona" class="btn btn--ghost">Como funciona</a>
+        </div>
+        <p class="hero__sig">“Para sempre, Aprendiz.”</p>
+      </div>
+      <div class="hero__art">
+        <img src="assets/img/mascote.png" alt="Mascote do Aprendiz para Sempre — jovem maçom de terno com avental branco" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PERFEIÇÃO / 100% ===== -->
+  <section class="section section--perfeicao">
+    <div class="container narrow center">
+      <p class="eyebrow">A régua é a perfeição</p>
+      <h2 class="big-quote">Aqui não existe 9,9.</h2>
+      <p class="lead">
+        A Maçonaria busca a perfeição. Ou você acerta as <strong>10 questões</strong>,
+        ou volta à bancada, lapida a pedra e tenta de novo amanhã.
+        Cada questionário perfeito é <strong>um degrau a mais</strong>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== ESCADA ===== -->
+  <section class="section section--dark" id="escada">
+    <div class="container escada">
+      <div class="escada__text">
+        <p class="eyebrow">A jornada</p>
+        <h2>A Escada de Jacó</h2>
+        <p class="lead">
+          São <strong>33 degraus</strong>, um novo questionário liberado
+          <strong>a cada semana</strong>. Gabarite as 10 questões e suba mais um degrau.
+          E a cada degrau conquistado, você recebe uma <strong>peça de arquitetura</strong>
+          sobre o tema daquela semana — para estudar e refletir durante os dias seguintes.
+          Ao alcançar o topo, seu <strong>certificado</strong>.
+        </p>
+        <p class="lead">
+          O conteúdo tem por base o <strong>Rito Escocês Antigo e Aceito (REAA)</strong>.
+          Em breve, outros ritos serão adicionados.
+        </p>
+        <p class="fineprint">
+          <strong>Nota:</strong> os 33 degraus representam 33 semanas de estudo.
+          É uma metáfora do progresso no conhecimento e <strong>não guarda qualquer
+          relação com graus filosóficos</strong> ou com os graus superiores do Rito.
+          Este espaço é dedicado aos conhecimentos básicos do Grau de Aprendiz, na Maçonaria Simbólica.
+        </p>
+      </div>
+      <div class="escada__ladder" aria-hidden="true">
+        <div class="ladder" id="ladder"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMO FUNCIONA ===== -->
+  <section class="section" id="como-funciona">
+    <div class="container">
+      <div class="center">
+        <p class="eyebrow">O caminho</p>
+        <h2>Como funciona</h2>
+      </div>
+      <ol class="steps">
+        <li class="step">
+          <span class="step__num">I</span>
+          <h3>Telhamento</h3>
+          <p>Ao entrar, o Guarda do Templo confirma que você é da Ordem. Só um Irmão passa pela porta.</p>
+        </li>
+        <li class="step">
+          <span class="step__num">II</span>
+          <h3>Primeiro degrau grátis</h3>
+          <p>A Semana 1 é por nossa conta: quiz completo e o ranking daquela semana, sem pagar nada.</p>
+        </li>
+        <li class="step">
+          <span class="step__num">III</span>
+          <h3>Suba a Escada</h3>
+          <p>Um questionário por semana, 10 questões, 100% para subir. No seu ritmo, com disciplina.</p>
+        </li>
+        <li class="step">
+          <span class="step__num">IV</span>
+          <h3>Certificado</h3>
+          <p>Ao vencer o 33º degrau, você recebe um certificado personalizado da sua jornada.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== PLANOS ===== -->
+  <section class="section section--muted" id="planos">
+    <div class="container">
+      <div class="center">
+        <p class="eyebrow">Assinatura</p>
+        <h2>Planos</h2>
+        <p class="lead center-lead">A Semana 1 e a pergunta do dia são sempre gratuitas. A partir da Semana 2, a jornada é para assinantes.</p>
+      </div>
+      <div class="plans">
+        <div class="plan">
+          <p class="plan__name">Mensal</p>
+          <p class="plan__price"><span class="plan__cur">R$</span>19<span class="plan__per">/mês</span></p>
+          <ul class="plan__list">
+            <li>Acesso a todos os degraus da semana</li>
+            <li>Ranking dos obreiros</li>
+            <li>Cancele quando quiser</li>
+          </ul>
+          <a href="app.html" class="btn btn--ghost">Começar</a>
+        </div>
+        <div class="plan plan--featured">
+          <p class="plan__badge">Melhor valor</p>
+          <p class="plan__name">Anual</p>
+          <p class="plan__price"><span class="plan__cur">R$</span>149<span class="plan__per">/ano</span></p>
+          <ul class="plan__list">
+            <li>Tudo do plano mensal</li>
+            <li><strong>Cerca de 2 meses grátis</strong></li>
+            <li>Certificado ao concluir a Escada</li>
+          </ul>
+          <a href="app.html" class="btn btn--solid">Começar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SOBRE ===== -->
+  <section class="section" id="sobre">
+    <div class="container narrow">
+      <p class="eyebrow">Quem está por trás</p>
+      <h2>Sobre</h2>
+      <p class="lead">
+        Sou <strong>William Mazza</strong>, Mestre Maçom, filiado à
+        <strong>ARLS Luz e Verdade III, nº 1.066</strong>, no Oriente de Joinville-SC (GOB-SC).
+      </p>
+      <p>
+        O <em>Aprendiz para Sempre</em> é um projeto <strong>pessoal</strong>, criado por mim a título
+        individual, para ajudar Irmãos a estudarem e testarem seus conhecimentos sobre Maçonaria.
+        Todo o conteúdo é a <strong>minha interpretação pessoal</strong> daquilo que estudo — com palavras
+        próprias, para fins exclusivamente educativos.
+      </p>
+      <p class="sig-line">— Para sempre, Aprendiz.</p>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER / AVISO LEGAL ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <a href="#top" class="brand brand--footer">
+          <span class="brand__mark" aria-hidden="true"></span>
+          <span class="brand__name">Aprendiz<span class="brand__thin"> para Sempre</span></span>
+        </a>
+        <a href="mailto:william@wmazza.com" class="footer__mail">william@wmazza.com</a>
+      </div>
+
+      <p class="aviso">
+        <strong>AVISO IMPORTANTE.</strong> Este é um projeto de caráter pessoal, mantido por um maçom a
+        título individual, <strong>sem qualquer vínculo, patrocínio ou representação</strong> de sua Loja,
+        de sua Potência ou do Grande Oriente do Brasil. Todo o conteúdo consiste na interpretação pessoal
+        do autor sobre seus estudos maçônicos, elaborada com palavras próprias e para fins
+        exclusivamente educativos. Este site <strong>não reproduz, cita, exibe nem disponibiliza</strong>,
+        no todo ou em parte, o Ritual do REAA – Grau 1 nem qualquer obra ritualística, cujos direitos
+        autorais pertencem ao Grande Oriente do Brasil e são integralmente respeitados. Dedicado
+        ao <strong>estudo da Maçonaria Simbólica</strong>.
+      </p>
+
+      <p class="footer__legal">
+        &copy; <span id="year"></span> Aprendiz para Sempre &middot; Projeto pessoal de William Mazza.
+      </p>
+    </div>
+  </footer>
+
+  <!-- toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
