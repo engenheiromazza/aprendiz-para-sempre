@@ -296,13 +296,17 @@
         (d.numero <= 3 ? "<span class='deg__free'>grátis</span>" : "<span class='deg__free deg__free--hidden'>·</span>") +
         "</div>";
     }).join("");
-    box.innerHTML = html;
+    var banner = e.tem_acesso ? "" :
+      "<div class='assinar-banner'><span>Você está no plano gratuito (degraus 1 a 3). Torne-se assinante para desbloquear até o 33º.</span><button id='bannerAssinar' class='btn btn--solid btn--sm'>Assinar</button></div>";
+    box.innerHTML = banner + html;
     box.querySelectorAll("[data-degrau]").forEach(function (el) {
       el.addEventListener("click", function () { startQuiz(parseInt(el.getAttribute("data-degrau"), 10)); });
     });
     box.querySelectorAll("[data-assinar]").forEach(function (el) {
       el.addEventListener("click", showAssinar);
     });
+    var ba = document.getElementById("bannerAssinar");
+    if (ba) ba.addEventListener("click", showAssinar);
   }
 
   async function loadRanking() {

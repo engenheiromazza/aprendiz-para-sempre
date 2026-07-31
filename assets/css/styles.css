@@ -305,6 +305,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ===== Escada (hub) ===== */
 .app__subtitle { font-family: var(--font-display); font-size: 1.25rem; margin: 2rem 0 0.9rem; }
+.assinar-banner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: 0.9rem 1rem; border: 1.5px solid var(--gold); border-radius: var(--radius); background: rgba(198, 160, 74, 0.1); margin-bottom: 1rem; font-size: 0.9rem; }
 .escada-app { display: flex; flex-direction: column; gap: 6px; margin: 1.2rem 0 1rem; }
 .deg { display: flex; align-items: center; gap: 1rem; padding: 0.7rem 1rem; border: 1.5px solid var(--gray-line); border-radius: var(--radius); font-size: 0.9rem; }
 .deg__n { font-family: var(--font-display); font-weight: 600; min-width: 3.2ch; }
