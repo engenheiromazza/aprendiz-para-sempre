@@ -191,6 +191,25 @@
       </div>
     </section>
 
+    <!-- ASSINAR -->
+    <section id="view-assinar" class="app__state" hidden>
+      <div class="app__card">
+        <p class="eyebrow">Assinatura</p>
+        <h1 class="app__title">Continue subindo a Escada</h1>
+        <p class="app__lead">Os 3 primeiros degraus são gratuitos. Para seguir do 4º ao 33º, torne-se assinante.</p>
+        <div class="planos-app">
+          <label class="plano-op"><input type="radio" name="plano" value="mensal" checked /> <span><strong>Mensal</strong> — R$ 19/mês</span></label>
+          <label class="plano-op"><input type="radio" name="plano" value="anual" /> <span><strong>Anual</strong> — R$ 149/ano <em>(2 meses grátis)</em></span></label>
+        </div>
+        <label class="app__cpf">CPF (para a cobrança)
+          <input type="text" id="assinarCpf" inputmode="numeric" placeholder="somente números" autocomplete="off" />
+        </label>
+        <button id="assinarBtn" class="btn btn--solid btn-full">Ir para o pagamento</button>
+        <button id="assinarVoltar" class="btn btn--ghost btn-full" style="margin-top:0.6rem">Voltar à Escada</button>
+        <p id="assinarMsg" class="app__msg"></p>
+      </div>
+    </section>
+
   </main>
 
   <script src="assets/js/config.js"></script>

@@ -318,7 +318,17 @@ a { color: inherit; text-decoration: none; }
 .deg--disponivel:hover .deg__n, .deg--disponivel:hover .deg__label { color: var(--paper); }
 .deg--cooldown { opacity: 0.6; }
 .deg--bloqueado_semana { opacity: 0.4; border-style: dashed; }
-.deg--bloqueado_pago { opacity: 0.75; }
+.deg--bloqueado_pago { opacity: 0.75; cursor: pointer; }
+.deg--bloqueado_pago:hover { opacity: 1; border-color: var(--gold); }
+
+.planos-app { display: flex; flex-direction: column; gap: 0.6rem; margin: 1.2rem 0; }
+.plano-op { display: flex; align-items: center; gap: 0.7rem; padding: 0.9rem 1rem; border: 1.5px solid var(--gray-line); border-radius: var(--radius); cursor: pointer; }
+.plano-op:hover { border-color: var(--gold); }
+.plano-op input { accent-color: var(--gold); }
+.plano-op em { color: var(--gold); font-style: normal; font-size: 0.85em; }
+.app__cpf { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.9rem; font-weight: 500; margin-bottom: 1rem; }
+.app__cpf input { width: 100%; padding: 0.8rem 0.9rem; border: 1.5px solid var(--gray-line); border-radius: var(--radius); font-family: var(--font-body); font-size: 1rem; background: var(--paper); color: var(--ink); }
+.app__cpf input:focus { outline: none; border-color: var(--gold); }
 
 .rankrow { display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 0.2rem; border-bottom: 1px solid var(--gray-line); }
 .rankrow__pos { font-family: var(--font-display); color: var(--gold); font-weight: 600; min-width: 2.6ch; }

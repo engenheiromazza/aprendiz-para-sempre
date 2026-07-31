@@ -12,7 +12,7 @@
   var sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
   var redirect = window.location.href.split("#")[0].split("?")[0];
 
-  var VIEWS = ["loading", "view-login", "view-telhamento", "view-telhamento-fail", "view-cadastro", "view-painel", "view-quiz"];
+  var VIEWS = ["loading", "view-login", "view-telhamento", "view-telhamento-fail", "view-cadastro", "view-painel", "view-quiz", "view-assinar"];
   function show(id) {
     VIEWS.forEach(function (v) {
       var el = document.getElementById(v);
@@ -250,9 +250,9 @@
     };
     var html = e.degraus.slice().reverse().map(function (d) {
       var lbl = d.status === "aprovado" && d.melhor_pontos != null ? ("✓ " + d.melhor_pontos + " pts") : (labels[d.status] || "");
-      var clickable = d.status === "disponivel";
-      return "<div class='deg deg--" + d.status + "'" +
-        (clickable ? " data-degrau='" + d.numero + "' role='button' tabindex='0'" : "") + ">" +
+      var attr = d.status === "disponivel" ? (" data-degrau='" + d.numero + "' role='button' tabindex='0'")
+        : d.status === "bloqueado_pago" ? " data-assinar='1' role='button' tabindex='0'" : "";
+      return "<div class='deg deg--" + d.status + "'" + attr + ">" +
         "<span class='deg__n'>" + d.numero + "º</span>" +
         "<span class='deg__label'>" + lbl + "</span>" +
         (d.numero <= 3 ? "<span class='deg__free'>grátis</span>" : "<span class='deg__free deg__free--hidden'>·</span>") +
@@ -261,6 +261,9 @@
     box.innerHTML = html;
     box.querySelectorAll("[data-degrau]").forEach(function (el) {
       el.addEventListener("click", function () { startQuiz(parseInt(el.getAttribute("data-degrau"), 10)); });
+    });
+    box.querySelectorAll("[data-assinar]").forEach(function (el) {
+      el.addEventListener("click", showAssinar);
     });
   }
 
@@ -367,6 +370,32 @@
     b.addEventListener("click", function () { route(); });
     box.appendChild(b);
   }
+
+  /* ---------- Assinatura (Asaas) ---------- */
+  function showAssinar() {
+    show("view-assinar");
+    var m = document.getElementById("assinarMsg");
+    if (m) m.textContent = "";
+  }
+  var assinarBtn = document.getElementById("assinarBtn");
+  if (assinarBtn) assinarBtn.addEventListener("click", async function () {
+    var sel = document.querySelector('input[name="plano"]:checked');
+    var plano = sel ? sel.value : "mensal";
+    var cpf = document.getElementById("assinarCpf").value;
+    var m = document.getElementById("assinarMsg");
+    m.textContent = "Gerando seu pagamento…";
+    var r = await sb.functions.invoke("criar-assinatura", { body: { plano: plano, cpf: cpf } });
+    if (r.error) {
+      var msg = "Não foi possível gerar o pagamento.";
+      try { if (r.error.context && r.error.context.json) { var b = await r.error.context.json(); if (b && b.error) msg = b.error; } } catch (_e) {}
+      m.textContent = msg;
+      return;
+    }
+    if (r.data && r.data.url) { window.location.href = r.data.url; return; }
+    m.textContent = (r.data && r.data.error) ? r.data.error : "Não foi possível gerar o pagamento.";
+  });
+  var assinarVoltar = document.getElementById("assinarVoltar");
+  if (assinarVoltar) assinarVoltar.addEventListener("click", function () { route(); });
 
   /* ---------- Sessão ---------- */
   logoutBtn.addEventListener("click", async function () {
