@@ -35,7 +35,7 @@
       } else {
         rung.className = "rung";
         var tag = "";
-        if (i === 1) { rung.className += " rung--free"; tag = "Grátis"; }
+        if (i <= 3) { rung.className += " rung--free"; tag = "Grátis"; }
         if (i === 33) { rung.className += " rung--top"; tag = "Certificado"; }
         rung.innerHTML = '<span class="rung__n">' + i + "º</span>" +
           (tag ? '<span class="rung__tag">' + tag + "</span>" : "");
