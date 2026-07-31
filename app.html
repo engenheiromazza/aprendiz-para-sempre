@@ -45,7 +45,21 @@
           </div>
         </form>
         <p class="app__hint" style="margin-top:0.6rem">Primeira vez? Clique em <strong>Criar conta</strong>. Você poderá trocar a senha depois.</p>
+        <p style="margin-top:0.4rem"><a href="#" id="forgotLink" class="app__link" style="font-size:0.85rem">Esqueci minha senha</a></p>
         <p id="loginMsg" class="app__msg"></p>
+      </div>
+    </section>
+
+    <!-- REDEFINIR SENHA -->
+    <section id="view-reset" class="app__state" hidden>
+      <div class="app__card">
+        <p class="eyebrow">Nova senha</p>
+        <h1 class="app__title">Defina uma nova senha</h1>
+        <form id="resetForm" class="app__form-inline" onsubmit="return false">
+          <input type="password" id="resetPass" class="app__input" placeholder="nova senha (mín. 6 caracteres)" minlength="6" autocomplete="new-password" />
+          <button type="button" id="resetBtn" class="btn btn--solid">Salvar nova senha</button>
+        </form>
+        <p id="resetMsg" class="app__msg"></p>
       </div>
     </section>
 

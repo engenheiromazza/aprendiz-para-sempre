@@ -12,7 +12,7 @@
   var sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
   var redirect = window.location.href.split("#")[0].split("?")[0];
 
-  var VIEWS = ["loading", "view-login", "view-telhamento", "view-telhamento-fail", "view-cadastro", "view-painel", "view-quiz", "view-assinar"];
+  var VIEWS = ["loading", "view-login", "view-reset", "view-telhamento", "view-telhamento-fail", "view-cadastro", "view-painel", "view-quiz", "view-assinar"];
   function show(id) {
     VIEWS.forEach(function (v) {
       var el = document.getElementById(v);
@@ -68,6 +68,30 @@
   }
   document.getElementById("pwLoginBtn").addEventListener("click", function () { pwAuth("login"); });
   document.getElementById("pwSignupBtn").addEventListener("click", function () { pwAuth("signup"); });
+
+  // Esqueci minha senha
+  var forgotLink = document.getElementById("forgotLink");
+  if (forgotLink) forgotLink.addEventListener("click", async function (e) {
+    e.preventDefault();
+    var email = document.getElementById("pwEmail").value.trim();
+    var m = document.getElementById("loginMsg");
+    if (!email) { m.textContent = "Digite seu e-mail no campo acima e clique em 'Esqueci minha senha'."; return; }
+    m.textContent = "Enviando…";
+    var r = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.href.split("#")[0].split("?")[0] });
+    m.textContent = r.error ? ("Erro: " + r.error.message) : "Se este e-mail estiver cadastrado, você receberá um link para redefinir a senha. (Confira o spam.)";
+  });
+  // Definir nova senha (após clicar no link de recuperação)
+  var resetBtn = document.getElementById("resetBtn");
+  if (resetBtn) resetBtn.addEventListener("click", async function () {
+    var pass = document.getElementById("resetPass").value;
+    var m = document.getElementById("resetMsg");
+    if (pass.length < 6) { m.textContent = "A senha precisa ter ao menos 6 caracteres."; return; }
+    m.textContent = "Salvando…";
+    var r = await sb.auth.updateUser({ password: pass });
+    if (r.error) { m.textContent = "Erro: " + r.error.message; return; }
+    m.textContent = "Senha alterada! Entrando…";
+    route();
+  });
 
   /* ---------- Telhamento ---------- */
   var telQ = [], telI = 0, telAns = [], telTimer = null;
@@ -445,6 +469,7 @@
     route();
   });
   sb.auth.onAuthStateChange(function (event) {
+    if (event === "PASSWORD_RECOVERY") { show("view-reset"); return; }
     if (event === "SIGNED_IN" || event === "SIGNED_OUT") route();
   });
 
