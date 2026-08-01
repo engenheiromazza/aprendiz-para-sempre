@@ -70,25 +70,32 @@
   document.getElementById("pwSignupBtn").addEventListener("click", function () { pwAuth("signup"); });
 
   // Esqueci minha senha
+  var resetEmail = "";
   var forgotLink = document.getElementById("forgotLink");
   if (forgotLink) forgotLink.addEventListener("click", async function (e) {
     e.preventDefault();
-    var email = document.getElementById("pwEmail").value.trim();
+    resetEmail = document.getElementById("pwEmail").value.trim();
     var m = document.getElementById("loginMsg");
-    if (!email) { m.textContent = "Digite seu e-mail no campo acima e clique em 'Esqueci minha senha'."; return; }
-    m.textContent = "Enviando…";
-    var r = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.href.split("#")[0].split("?")[0] });
-    m.textContent = r.error ? ("Erro: " + r.error.message) : "Se este e-mail estiver cadastrado, você receberá um link para redefinir a senha. (Confira o spam.)";
+    if (!resetEmail) { m.textContent = "Digite seu e-mail no campo acima e clique em 'Esqueci minha senha'."; return; }
+    m.textContent = "Enviando o código…";
+    var r = await sb.auth.resetPasswordForEmail(resetEmail);
+    if (r.error) { m.textContent = "Erro: " + r.error.message; return; }
+    show("view-reset");
+    document.getElementById("resetMsg").textContent = "Enviamos um código de 6 dígitos para " + resetEmail + ". (Confira o spam.)";
   });
-  // Definir nova senha (após clicar no link de recuperação)
+  // Definir nova senha com o código de 6 dígitos
   var resetBtn = document.getElementById("resetBtn");
   if (resetBtn) resetBtn.addEventListener("click", async function () {
+    var code = document.getElementById("resetCode").value.trim();
     var pass = document.getElementById("resetPass").value;
     var m = document.getElementById("resetMsg");
-    if (pass.length < 6) { m.textContent = "A senha precisa ter ao menos 6 caracteres."; return; }
-    m.textContent = "Salvando…";
+    if (code.length < 4) { m.textContent = "Digite o código de 6 dígitos do e-mail."; return; }
+    if (pass.length < 6) { m.textContent = "A nova senha precisa ter ao menos 6 caracteres."; return; }
+    m.textContent = "Conferindo o código…";
+    var v = await sb.auth.verifyOtp({ email: resetEmail, token: code, type: "recovery" });
+    if (v.error) { m.textContent = "Código inválido ou expirado. Peça um novo."; return; }
     var r = await sb.auth.updateUser({ password: pass });
-    if (r.error) { m.textContent = "Erro: " + r.error.message; return; }
+    if (r.error) { m.textContent = "Erro ao salvar a senha: " + r.error.message; return; }
     m.textContent = "Senha alterada! Entrando…";
     route();
   });
@@ -469,7 +476,6 @@
     route();
   });
   sb.auth.onAuthStateChange(function (event) {
-    if (event === "PASSWORD_RECOVERY") { show("view-reset"); return; }
     if (event === "SIGNED_IN" || event === "SIGNED_OUT") route();
   });
 
