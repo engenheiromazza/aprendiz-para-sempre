@@ -81,7 +81,7 @@
     var r = await sb.auth.resetPasswordForEmail(resetEmail);
     if (r.error) { m.textContent = "Erro: " + r.error.message; return; }
     show("view-reset");
-    document.getElementById("resetMsg").textContent = "Enviamos um código de 6 dígitos para " + resetEmail + ". (Confira o spam.)";
+    document.getElementById("resetMsg").textContent = "Enviamos um código para " + resetEmail + ". (Confira o spam.)";
   });
   // Definir nova senha com o código de 6 dígitos
   var resetBtn = document.getElementById("resetBtn");
