@@ -279,15 +279,17 @@
 
   function mdToHtml(md) {
     var out = [], para = [];
+    function inline(s) { return esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>"); }
     function flush() { if (para.length) { out.push("<p>" + para.join(" ") + "</p>"); para = []; } }
     String(md).split("\n").forEach(function (line) {
       var l = line.trim();
       if (l === "") { flush(); }
       else if (l === "---") { flush(); out.push("<hr>"); }
-      else if (l.indexOf("### ") === 0) { flush(); out.push("<h4>" + esc(l.slice(4)) + "</h4>"); }
-      else if (l.indexOf("## ") === 0) { flush(); out.push("<h3>" + esc(l.slice(3)) + "</h3>"); }
-      else if (l.indexOf("# ") === 0) { flush(); out.push("<h3>" + esc(l.slice(2)) + "</h3>"); }
-      else { para.push(esc(l)); }
+      else if (l.indexOf("> ") === 0) { flush(); out.push("<blockquote>" + inline(l.slice(2)) + "</blockquote>"); }
+      else if (l.indexOf("### ") === 0) { flush(); out.push("<h4>" + inline(l.slice(4).replace(/\*\*/g, "")) + "</h4>"); }
+      else if (l.indexOf("## ") === 0) { flush(); out.push("<h3>" + inline(l.slice(3).replace(/\*\*/g, "")) + "</h3>"); }
+      else if (l.indexOf("# ") === 0) { flush(); out.push("<h3>" + inline(l.slice(2).replace(/\*\*/g, "")) + "</h3>"); }
+      else { para.push(inline(l)); }
     });
     flush();
     return out.join("");
