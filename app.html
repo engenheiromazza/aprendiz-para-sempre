@@ -157,7 +157,7 @@
             <input type="text" name="profissao" required />
           </label>
 
-          <label class="app__check"><input type="checkbox" name="opt_in_ranking" /> <span>Quero aparecer no ranking dos obreiros (com meu nome simbólico)</span></label>
+          <label class="app__check"><input type="checkbox" name="opt_in_ranking" checked /> <span>Quero aparecer no ranking dos obreiros (com meu nome simbólico)</span></label>
 
           <button type="submit" class="btn btn--solid btn-full">Salvar e entrar</button>
           <p id="cadastroMsg" class="app__msg"></p>
@@ -176,6 +176,7 @@
           <button type="button" class="hubtab" data-tab="ranking">Ranking</button>
           <button type="button" class="hubtab" data-tab="pecas">Peças de Arquitetura</button>
           <button type="button" class="hubtab" data-tab="duvidas">Dúvidas e Sugestões</button>
+          <button type="button" class="hubtab" data-tab="dados">Meus Dados</button>
         </nav>
 
         <div id="tab-escada" class="hubpanel">
@@ -193,6 +194,10 @@
 
         <div id="tab-duvidas" class="hubpanel" hidden>
           <div id="duvidasBox"></div>
+        </div>
+
+        <div id="tab-dados" class="hubpanel" hidden>
+          <div id="dadosBox"></div>
         </div>
       </div>
     </section>

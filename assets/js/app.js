@@ -178,9 +178,7 @@
   }
 
   /* ---------- Cadastro ---------- */
-  document.getElementById("cadastroForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-    var f = e.target, m = document.getElementById("cadastroMsg");
+  function coletarPerfil(f) {
     var fd = new FormData(f);
     var numero = fd.get("loja_numero");
     var params = {
@@ -207,12 +205,16 @@
     if (!params.p_estado_uf) faltando.push("Estado (UF)");
     if (!params.p_grau) faltando.push("Grau");
     if (!params.p_profissao) faltando.push("Profissão");
-    if (faltando.length) {
-      m.textContent = "Falta preencher: " + faltando.join(", ") + ".";
-      return;
-    }
+    return { params: params, faltando: faltando };
+  }
+
+  document.getElementById("cadastroForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var m = document.getElementById("cadastroMsg");
+    var c = coletarPerfil(e.target);
+    if (c.faltando.length) { m.textContent = "Falta preencher: " + c.faltando.join(", ") + "."; return; }
     m.textContent = "Salvando…";
-    var r = await sb.rpc("salvar_cadastro", params);
+    var r = await sb.rpc("salvar_cadastro", c.params);
     if (r.error) { m.textContent = "Erro: " + r.error.message; return; }
     route();
   });
@@ -229,15 +231,80 @@
       if (tab === "ranking") loadRanking();
       if (tab === "pecas") renderPecas();
       if (tab === "duvidas") renderDuvidas();
+      if (tab === "dados") renderDados();
     });
   });
 
+  var currentProfile = null;
+
   async function showPainel(profile) {
+    currentProfile = profile;
     show("view-painel");
     var n = document.getElementById("painelNome");
     if (n) n.textContent = profile.nome_simbolico || profile.nome_completo || "Irmão";
     activateTab("escada");
     await renderEscada();
+  }
+
+  /* ---------- Meus Dados (edição de perfil) ---------- */
+  var UFS = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
+  var RITOS = ["Rito Escocês Antigo e Aceito (REAA)","Rito de York","Rito Adonhiramita","Rito Brasileiro","Rito Moderno (Francês)","Rito Schröder","Rito de Emulação","Rito Escocês Retificado"];
+  var POTENCIAS = [["GOB","GOB — Grande Oriente do Brasil"],["Grandes Lojas","Grandes Lojas"],["Outra","Outra"]];
+  var GRAUS = [["aprendiz","Aprendiz"],["companheiro","Companheiro"],["mestre","Mestre"]];
+
+  function renderDados() {
+    var p = currentProfile || {};
+    var box = document.getElementById("dadosBox");
+    function inp(name, label, type, val, extra) {
+      return "<label>" + label + "<input type='" + type + "' name='" + name + "' value='" + esc(val == null ? "" : val) + "' " + (extra || "") + " /></label>";
+    }
+    function radios(name, opts, cur) {
+      return opts.map(function (o) {
+        return "<label class='opt'><input type='radio' name='" + name + "' value='" + esc(o[0]) + "' " + (cur === o[0] ? "checked" : "") + " /> <span>" + esc(o[1]) + "</span></label>";
+      }).join("");
+    }
+    var ritoRadios = RITOS.map(function (r) {
+      return "<label class='opt'><input type='radio' name='rito' value='" + esc(r) + "' " + (p.rito === r ? "checked" : "") + " /> <span>" + esc(r) + "</span></label>";
+    }).join("");
+    var ufOpts = "<option value='' " + (!p.estado_uf ? "selected" : "") + " disabled>UF</option>" + UFS.map(function (u) {
+      return "<option " + (p.estado_uf === u ? "selected" : "") + ">" + u + "</option>";
+    }).join("");
+    box.innerHTML =
+      "<p class='app__lead'>Atualize seus dados quando precisar. Seu e-mail de acesso não pode ser alterado por aqui.</p>" +
+      "<form id='dadosForm' class='app__form' novalidate>" +
+        inp("nome_completo", "Nome completo", "text", p.nome_completo) +
+        "<label>Nome simbólico <span class='app__hint'>(é o que aparece no ranking)</span>" +
+          "<input type='text' name='nome_simbolico' value='" + esc(p.nome_simbolico || "") + "' /></label>" +
+        inp("data_nascimento", "Data de nascimento", "date", p.data_nascimento) +
+        "<fieldset><legend>Potência</legend>" + radios("potencia", POTENCIAS, p.potencia) + "</fieldset>" +
+        "<fieldset><legend>Rito</legend>" + ritoRadios + "</fieldset>" +
+        "<div class='app__row'>" +
+          inp("oriente_cidade", "Oriente (cidade)", "text", p.oriente_cidade) +
+          "<label>Estado (UF)<select name='estado_uf'>" + ufOpts + "</select></label>" +
+        "</div>" +
+        "<div class='app__row'>" +
+          inp("loja_nome", "Loja (nome)", "text", p.loja_nome) +
+          inp("loja_numero", "Nº da Loja", "number", p.loja_numero, "min='0'") +
+        "</div>" +
+        "<fieldset><legend>Seu grau atual</legend>" + radios("grau", GRAUS, p.grau) + "</fieldset>" +
+        inp("profissao", "Profissão", "text", p.profissao) +
+        "<label class='app__check'><input type='checkbox' name='opt_in_ranking' " + (p.opt_in_ranking ? "checked" : "") + " /> <span>Quero aparecer no ranking dos obreiros (com meu nome simbólico)</span></label>" +
+        "<button type='submit' class='btn btn--solid btn-full'>Salvar alterações</button>" +
+        "<p id='dadosMsg' class='app__msg'></p>" +
+      "</form>";
+    document.getElementById("dadosForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      var m = document.getElementById("dadosMsg");
+      var c = coletarPerfil(e.target);
+      if (c.faltando.length) { m.textContent = "Falta preencher: " + c.faltando.join(", ") + "."; return; }
+      m.textContent = "Salvando…";
+      var r = await sb.rpc("salvar_cadastro", c.params);
+      if (r.error) { m.textContent = "Erro: " + r.error.message; return; }
+      currentProfile = r.data || currentProfile;
+      var n = document.getElementById("painelNome");
+      if (n) n.textContent = currentProfile.nome_simbolico || currentProfile.nome_completo || "Irmão";
+      m.textContent = "Dados atualizados com sucesso. ✓";
+    });
   }
 
   async function renderPecas() {
