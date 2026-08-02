@@ -197,8 +197,18 @@
       p_profissao: (fd.get("profissao") || "").trim(),
       p_opt_in_ranking: fd.get("opt_in_ranking") === "on"
     };
-    if (!params.p_potencia || !params.p_rito || !params.p_grau) {
-      m.textContent = "Selecione potência, rito e grau.";
+    var faltando = [];
+    if (!params.p_nome_completo) faltando.push("Nome completo");
+    if (!params.p_nome_simbolico) faltando.push("Nome simbólico");
+    if (!params.p_data_nascimento) faltando.push("Data de nascimento");
+    if (!params.p_potencia) faltando.push("Potência");
+    if (!params.p_rito) faltando.push("Rito");
+    if (!params.p_oriente_cidade) faltando.push("Oriente (cidade)");
+    if (!params.p_estado_uf) faltando.push("Estado (UF)");
+    if (!params.p_grau) faltando.push("Grau");
+    if (!params.p_profissao) faltando.push("Profissão");
+    if (faltando.length) {
+      m.textContent = "Falta preencher: " + faltando.join(", ") + ".";
       return;
     }
     m.textContent = "Salvando…";
