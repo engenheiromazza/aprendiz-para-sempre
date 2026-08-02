@@ -41,6 +41,7 @@
       if (!profile) await new Promise(function (r) { setTimeout(r, 600); });
     }
     if (!profile) return showLogin("Não consegui carregar seu perfil. Saia e entre novamente.");
+    if (profile.telhamento_bloqueado) return showTelBloqueado();
     if (!profile.telhamento_ok) return startTelhamento();
     if (!profile.cadastro_completo) return show("view-cadastro");
     return showPainel(profile);
@@ -155,10 +156,26 @@
     box.innerHTML = "<p class='app__msg'>Conferindo…</p>";
     var r = await sb.rpc("telhamento_verificar", { p_respostas: telAns });
     if (r.error) { box.innerHTML = "<p class='app__msg'>Erro ao verificar. Tente novamente.</p>"; return; }
-    if (r.data && r.data.ok) route();
-    else show("view-telhamento-fail");
+    if (r.data && r.data.ok) { route(); return; }
+    if (r.data && r.data.bloqueado) { showTelBloqueado(); return; }
+    showTelRetry();
   }
-  document.getElementById("telhamentoRetry").addEventListener("click", startTelhamento);
+  function showTelRetry() {
+    show("view-telhamento-fail");
+    document.getElementById("telFailBox").innerHTML =
+      "<p class='eyebrow'>Guarda do Templo</p>" +
+      "<h1 class='app__title'>Não foi dessa vez</h1>" +
+      "<p class='app__lead'>Um maçom conhece os fundamentos da Ordem. Estude e prossiga — novas perguntas serão sorteadas.</p>" +
+      "<button id='telhamentoRetry' class='btn btn--solid'>Tentar novamente</button>";
+    document.getElementById("telhamentoRetry").addEventListener("click", startTelhamento);
+  }
+  function showTelBloqueado() {
+    show("view-telhamento-fail");
+    document.getElementById("telFailBox").innerHTML =
+      "<p class='eyebrow'>Guarda do Templo</p>" +
+      "<h1 class='app__title'>Acesso encerrado</h1>" +
+      "<p class='app__lead'>Esta plataforma é feita para maçons. As tentativas foram esgotadas e este acesso foi encerrado.</p>";
+  }
 
   /* ---------- Cadastro ---------- */
   document.getElementById("cadastroForm").addEventListener("submit", async function (e) {
@@ -428,9 +445,9 @@
       box.innerHTML = "<h2 class='app__title'>Subiu ao " + qDegrau + "º degrau! 🔺</h2>" +
         "<p class='app__lead'>Gabaritou! <strong>+" + d.pontos + " pontos.</strong> A pedra está mais lisa, Irmão.</p>";
     } else {
-      var lista = (d.erradas || []).join(", ");
+      var n = d.erros || 0;
       box.innerHTML = "<h2 class='app__title'>Ainda não foi…</h2>" +
-        "<p class='app__lead'>Você errou " + ((d.erradas || []).length === 1 ? "a questão " : "as questões ") + lista +
+        "<p class='app__lead'>Você errou " + n + (n === 1 ? " questão" : " questões") +
         ". Estude mais e refaça amanhã. Aqui, ou é 100%, ou volta à bancada. 🔨</p>";
     }
     addVoltar(box);
