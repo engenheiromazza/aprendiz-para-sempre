@@ -413,12 +413,25 @@
       bloqueado_semana: "abre em breve", bloqueado_pago: "assine para acessar",
       bloqueado_anterior: "conclua o anterior"
     };
+    // Título só é revelado quando o degrau está desbloqueado (concluído/disponível/cooldown)
+    // ou quando é o PRÓXIMO nível a abrir — como aperitivo. Títulos genéricos ("Degrau N") ficam ocultos.
+    var desbloqueado = { aprovado: true, disponivel: true, cooldown: true };
+    var proximo = null;
+    e.degraus.forEach(function (d) {
+      if (proximo === null && !desbloqueado[d.status]) proximo = d.numero;
+    });
+    function tituloReal(d) {
+      return d.titulo && d.titulo !== ("Degrau " + d.numero) ? esc(d.titulo) : "";
+    }
     var html = e.degraus.slice().reverse().map(function (d) {
       var lbl = d.status === "aprovado" && d.melhor_pontos != null ? ("✓ " + d.melhor_pontos + " pts") : (labels[d.status] || "");
+      var revela = desbloqueado[d.status] || d.numero === proximo;
+      var titulo = revela ? tituloReal(d) : "";
       var attr = d.status === "disponivel" ? (" data-degrau='" + d.numero + "' role='button' tabindex='0'")
         : d.status === "bloqueado_pago" ? " data-assinar='1' role='button' tabindex='0'" : "";
       return "<div class='deg deg--" + d.status + "'" + attr + ">" +
         "<span class='deg__n'>" + d.numero + "º</span>" +
+        "<span class='deg__t'>" + titulo + "</span>" +
         "<span class='deg__label'>" + lbl + "</span>" +
         (d.numero <= 3 ? "<span class='deg__free'>grátis</span>" : "<span class='deg__free deg__free--hidden'>·</span>") +
         "</div>";

@@ -309,14 +309,18 @@ a { color: inherit; text-decoration: none; }
 .escada-app { display: flex; flex-direction: column; gap: 6px; margin: 1.2rem 0 1rem; }
 .deg { display: flex; align-items: center; gap: 1rem; padding: 0.7rem 1rem; border: 1.5px solid var(--gray-line); border-radius: var(--radius); font-size: 0.9rem; }
 .deg__n { font-family: var(--font-display); font-weight: 600; min-width: 3.2ch; }
-.deg__label { color: var(--gray); font-size: 0.85rem; flex: 1; }
-.deg__free { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid var(--gold); color: var(--gold); padding: 0.1rem 0.4rem; border-radius: 2px; }
+.deg__t { flex: 1; color: var(--ink-soft); font-size: 0.88rem; }
+.deg__t:empty { flex: 1; }
+.deg__label { color: var(--gray); font-size: 0.8rem; white-space: nowrap; }
+.deg__free { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid var(--gold); color: var(--gold); padding: 0.1rem 0.4rem; border-radius: 2px; white-space: nowrap; }
 .deg__free--hidden { visibility: hidden; }
 .deg--aprovado { border-color: var(--gold); background: rgba(198, 160, 74, 0.12); }
+.deg--aprovado .deg__t { color: var(--ink); }
 .deg--aprovado .deg__label { color: var(--gold); }
 .deg--disponivel { border-color: var(--ink); cursor: pointer; transition: 0.15s; }
+.deg--disponivel .deg__t { color: var(--ink); }
 .deg--disponivel:hover { background: var(--ink); }
-.deg--disponivel:hover .deg__n, .deg--disponivel:hover .deg__label { color: var(--paper); }
+.deg--disponivel:hover .deg__n, .deg--disponivel:hover .deg__t, .deg--disponivel:hover .deg__label { color: var(--paper); }
 .deg--cooldown { opacity: 0.6; }
 .deg--bloqueado_semana { opacity: 0.4; border-style: dashed; }
 .deg--bloqueado_pago { opacity: 0.75; cursor: pointer; }
