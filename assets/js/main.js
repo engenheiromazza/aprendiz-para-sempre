@@ -62,4 +62,32 @@
       showToast("Em breve, Irmão — estamos levantando as colunas do Templo. 🔨");
     });
   });
+
+  /* Contador de obreiros (maçons cadastrados) — some se falhar ou não houver ninguém */
+  var cfg = window.APP_CONFIG || {};
+  var obreirosSec = document.getElementById("obreiros");
+  var obreirosOut = document.getElementById("obreirosCount");
+  if (cfg.SUPABASE_URL && obreirosSec && obreirosOut) {
+    fetch(cfg.SUPABASE_URL + "/rest/v1/rpc/contar_obreiros", {
+      method: "POST",
+      headers: {
+        "apikey": cfg.SUPABASE_ANON_KEY,
+        "Authorization": "Bearer " + cfg.SUPABASE_ANON_KEY,
+        "Content-Type": "application/json"
+      },
+      body: "{}"
+    }).then(function (r) { return r.ok ? r.json() : null; }).then(function (n) {
+      n = parseInt(n, 10);
+      if (!n || n < 1) return;
+      obreirosSec.hidden = false;
+      var dur = 1100, t0 = null;
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        obreirosOut.textContent = Math.round(p * n).toLocaleString("pt-BR");
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }).catch(function () {});
+  }
 })();

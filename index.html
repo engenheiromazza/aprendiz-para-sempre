@@ -42,8 +42,9 @@
         <p class="kicker">Conhecimentos básicos &middot; 1º Grau (Aprendiz) &middot; REAA</p>
         <h1 class="hero__title">Aprendiz<br /><em>para Sempre</em></h1>
         <p class="hero__lead">
-          Teste e aprofunde os <strong>conhecimentos básicos da Maçonaria</strong> —
-          os fundamentos do 1º Grau, o do Aprendiz Maçom — um degrau de cada vez.
+          Um espaço para <strong>Mestres, Companheiros e Aprendizes</strong> testarem seus
+          conhecimentos sobre Maçonaria e aprenderem cada vez mais — os fundamentos do 1º Grau,
+          o do Aprendiz Maçom, um degrau de cada vez.
         </p>
         <div class="hero__actions">
           <a href="app.html" class="btn btn--solid">Entrar</a>
@@ -57,16 +58,26 @@
     </div>
   </section>
 
-  <!-- ===== A RÉGUA: 7 DE 10 ===== -->
+  <!-- ===== OBREIROS (contador ao vivo) ===== -->
+  <section class="obreiros" id="obreiros" hidden aria-label="Obreiros na plataforma">
+    <div class="container center">
+      <p class="obreiros__num"><span id="obreirosCount">0</span></p>
+      <p class="obreiros__label">obreiros já estão lapidando a pedra bruta</p>
+    </div>
+  </section>
+
+  <!-- ===== A RÉGUA: O MÉRITO ===== -->
   <section class="section section--perfeicao">
     <div class="container narrow center">
-      <p class="eyebrow">Feito para aprender</p>
-      <h2 class="big-quote">Acertou 7 das 10? Subiu.</h2>
+      <p class="eyebrow">A régua é o mérito</p>
+      <h2 class="big-quote">Mostre o quanto você já sabe.</h2>
       <p class="lead">
-        Chega de tudo-ou-nada. Você sobe o degrau acertando <strong>7 das 10 questões</strong> — e, ao
-        final, vê exatamente <strong>o que acertou e o que errou</strong>, para estudar de verdade.
-        Faltou? Refaz na hora, quantas vezes quiser. Quanto mais você acerta — e mais rápido —,
-        <strong>melhor no ranking</strong>.
+        Todo Irmão tem orgulho do que aprendeu — aqui, esse conhecimento aparece. Acerte
+        <strong>7 das 10 questões</strong> e suba o degrau; acerte mais, e mais rápido, e seu nome
+        sobe no <strong>ranking dos obreiros</strong>, à vista de toda a Ordem. Ao final, você vê
+        exatamente <strong>o que já domina e o que ainda falta lapidar</strong> — porque o verdadeiro
+        maçom nunca se dá por pronto. Errou? Refaz na hora, quantas vezes quiser. No Ofício, a pedra
+        nunca está lisa demais. 🔨
       </p>
     </div>
   </section>
@@ -217,6 +228,7 @@
   <!-- toast -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="assets/js/config.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>
