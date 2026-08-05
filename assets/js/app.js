@@ -409,13 +409,13 @@
     var concluidos = e.degraus.filter(function (d) { return d.status === "aprovado"; }).length;
     info.textContent = "Você conquistou " + concluidos + " de 33 degraus. Um novo degrau abre toda segunda-feira, 8h.";
     var labels = {
-      aprovado: "concluído", disponivel: "▶ fazer agora", cooldown: "aguarde 24h",
+      aprovado: "concluído", disponivel: "▶ fazer agora",
       bloqueado_semana: "abre em breve", bloqueado_pago: "assine para acessar",
       bloqueado_anterior: "conclua o anterior"
     };
-    // Título só é revelado quando o degrau está desbloqueado (concluído/disponível/cooldown)
+    // Título só é revelado quando o degrau está desbloqueado (concluído/disponível)
     // ou quando é o PRÓXIMO nível a abrir — como aperitivo. Títulos genéricos ("Degrau N") ficam ocultos.
-    var desbloqueado = { aprovado: true, disponivel: true, cooldown: true };
+    var desbloqueado = { aprovado: true, disponivel: true };
     var proximo = null;
     e.degraus.forEach(function (d) {
       if (proximo === null && !desbloqueado[d.status]) proximo = d.numero;
@@ -428,7 +428,8 @@
       var revela = desbloqueado[d.status] || d.numero === proximo;
       var titulo = revela ? tituloReal(d) : "";
       var attr = d.status === "disponivel" ? (" data-degrau='" + d.numero + "' role='button' tabindex='0'")
-        : d.status === "bloqueado_pago" ? " data-assinar='1' role='button' tabindex='0'" : "";
+        : d.status === "bloqueado_pago" ? " data-assinar='1' role='button' tabindex='0'"
+        : d.status === "aprovado" ? (" data-revisar='" + d.numero + "' role='button' tabindex='0'") : "";
       return "<div class='deg deg--" + d.status + "'" + attr + ">" +
         "<span class='deg__n'>" + d.numero + "º</span>" +
         "<span class='deg__t'>" + titulo + "</span>" +
@@ -444,6 +445,9 @@
     });
     box.querySelectorAll("[data-assinar]").forEach(function (el) {
       el.addEventListener("click", showAssinar);
+    });
+    box.querySelectorAll("[data-revisar]").forEach(function (el) {
+      el.addEventListener("click", function () { abrirRevisao(parseInt(el.getAttribute("data-revisar"), 10)); });
     });
     var ba = document.getElementById("bannerAssinar");
     if (ba) ba.addEventListener("click", showAssinar);
@@ -481,7 +485,7 @@
   async function startQuiz(degrau) {
     qDegrau = degrau;
     show("view-quiz");
-    document.getElementById("quizDegrauLabel").textContent = "Degrau " + degrau + " — 10 questões, 60s cada, nota 100%";
+    document.getElementById("quizDegrauLabel").textContent = "Degrau " + degrau + " — 10 questões, 60s cada · acerte 7 para subir";
     var box = document.getElementById("quizBox");
     box.innerHTML = "<p class='app__msg'>Preparando o questionário…</p>";
     var r = await sb.rpc("quiz_iniciar", { p_degrau: degrau });
@@ -526,6 +530,25 @@
     else finishQuiz();
   }
 
+  // Lista de revisão: verde onde acertou, vermelho na alternativa que marcou errada. Nunca mostra a certa.
+  function revisaoListaHTML(items) {
+    return "<div class='rev-list'>" + items.map(function (q, i) {
+      var alts = (q.alternativas || []).map(function (a, ai) {
+        var cls = "rev-alt";
+        if (q.minha === ai) cls += q.ok ? " rev-alt--ok" : " rev-alt--no";
+        return "<li class='" + cls + "'>" + esc(a) + "</li>";
+      }).join("");
+      var naoResp = (q.minha === -1 || q.minha == null);
+      var head = q.ok
+        ? "<span class='rev-q__mark rev-q__mark--ok'>✓</span> Você acertou"
+        : "<span class='rev-q__mark rev-q__mark--no'>✗</span> " + (naoResp ? "Não respondida (tempo esgotado)" : "Você errou");
+      return "<div class='rev-q " + (q.ok ? "rev-q--ok" : "rev-q--no") + "'>" +
+        "<div class='rev-q__head'>Questão " + (i + 1) + " · " + head + "</div>" +
+        "<p class='rev-q__perg'>" + esc(q.pergunta) + "</p>" +
+        "<ul class='rev-q__alts'>" + alts + "</ul></div>";
+    }).join("") + "</div>";
+  }
+
   async function finishQuiz() {
     var box = document.getElementById("quizBox");
     box.innerHTML = "<p class='app__msg'>Corrigindo…</p>";
@@ -533,15 +556,46 @@
     var r = await sb.rpc("quiz_enviar", { p_degrau: qDegrau, p_respostas: qAns, p_tempo_seg: tempo });
     if (r.error) { box.innerHTML = "<p class='app__msg'>Erro: " + r.error.message + "</p>"; addVoltar(box); return; }
     var d = r.data;
+    var items = qQ.map(function (q, i) {
+      return { pergunta: q.pergunta, alternativas: q.alternativas, minha: qAns[i].idx, ok: !!(d.resultado && d.resultado[i]) };
+    });
+    var cabec;
     if (d.aprovado) {
-      box.innerHTML = "<h2 class='app__title'>Subiu ao " + qDegrau + "º degrau! 🔺</h2>" +
-        "<p class='app__lead'>Gabaritou! <strong>+" + d.pontos + " pontos.</strong> A pedra está mais lisa, Irmão.</p>";
+      cabec = "<h2 class='app__title'>Subiu ao " + qDegrau + "º degrau! 🔺</h2>" +
+        "<p class='app__lead'>Você acertou <strong>" + d.acertos + " de 10</strong> — <strong>+" + d.pontos + " pontos</strong>. A pedra está mais lisa, Irmão.</p>" +
+        "<p class='rev-nota'>Reveja abaixo suas respostas. Este degrau já é seu — a revisão fica disponível quando quiser, mas não é mais possível refazê-lo.</p>";
     } else {
-      var n = d.erros || 0;
-      box.innerHTML = "<h2 class='app__title'>Ainda não foi…</h2>" +
-        "<p class='app__lead'>Você errou " + n + (n === 1 ? " questão" : " questões") +
-        ". Estude mais e refaça amanhã. Aqui, ou é 100%, ou volta à bancada. 🔨</p>";
+      cabec = "<h2 class='app__title'>Faltou pouco…</h2>" +
+        "<p class='app__lead'>Você acertou <strong>" + d.acertos + " de 10</strong>. São necessárias <strong>7</strong> para subir. Veja abaixo o que errou — sem a resposta certa, o estudo é seu 🔨 — e refaça quando quiser.</p>";
     }
+    box.innerHTML = cabec + revisaoListaHTML(items);
+    if (!d.aprovado) {
+      var rf = document.createElement("button");
+      rf.className = "btn btn--solid";
+      rf.textContent = "Refazer agora";
+      rf.addEventListener("click", function () { startQuiz(qDegrau); });
+      box.appendChild(rf);
+    }
+    addVoltar(box);
+  }
+
+  async function abrirRevisao(degrau) {
+    qDegrau = degrau;
+    show("view-quiz");
+    document.getElementById("quizDegrauLabel").textContent = "Degrau " + degrau + " — revisão";
+    var box = document.getElementById("quizBox");
+    box.innerHTML = "<p class='app__msg'>Abrindo sua revisão…</p>";
+    var r = await sb.rpc("quiz_revisao", { p_degrau: degrau });
+    if (r.error || !r.data || !r.data.existe) {
+      box.innerHTML = "<p class='app__lead'>A revisão deste degrau ainda não está disponível.</p>";
+      addVoltar(box); return;
+    }
+    var d = r.data;
+    box.innerHTML = "<h2 class='app__title'>Degrau " + degrau + " — sua revisão</h2>" +
+      "<p class='app__lead'>Você acertou <strong>" + d.acertos + " de 10</strong>" +
+      (d.pontos ? " — <strong>" + d.pontos + " pontos</strong>" : "") +
+      ". As questões que errou aparecem em vermelho, sem a resposta certa.</p>" +
+      revisaoListaHTML(d.questoes);
     addVoltar(box);
   }
 

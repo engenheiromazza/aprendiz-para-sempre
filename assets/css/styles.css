@@ -325,6 +325,24 @@ a { color: inherit; text-decoration: none; }
 .deg--bloqueado_semana { opacity: 0.4; border-style: dashed; }
 .deg--bloqueado_pago { opacity: 0.75; cursor: pointer; }
 .deg--bloqueado_pago:hover { opacity: 1; border-color: var(--gold); }
+.deg--aprovado { cursor: pointer; }
+.deg--aprovado:hover { border-color: var(--gold); }
+
+/* Revisão do quiz */
+.rev-nota { font-size: 0.82rem; color: var(--gray); margin: 0.4rem 0 0; }
+.rev-list { display: flex; flex-direction: column; gap: 0.8rem; margin: 1.3rem 0; }
+.rev-q { border: 1px solid var(--gray-line); border-left-width: 4px; border-radius: var(--radius); padding: 0.8rem 1rem; }
+.rev-q--ok { border-left-color: #2e7d32; }
+.rev-q--no { border-left-color: #c0392b; }
+.rev-q__head { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray); margin-bottom: 0.4rem; }
+.rev-q__mark { font-weight: 700; }
+.rev-q__mark--ok { color: #2e7d32; }
+.rev-q__mark--no { color: #c0392b; }
+.rev-q__perg { font-weight: 500; margin: 0 0 0.6rem; }
+.rev-q__alts { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.rev-alt { padding: 0.45rem 0.7rem; border: 1px solid var(--gray-line); border-radius: var(--radius); font-size: 0.9rem; color: var(--ink-soft); }
+.rev-alt--ok { border-color: #2e7d32; background: rgba(46,125,50,0.1); color: #1b5e20; font-weight: 500; }
+.rev-alt--no { border-color: #c0392b; background: rgba(192,57,43,0.1); color: #922b21; font-weight: 500; }
 
 .planos-app { display: flex; flex-direction: column; gap: 0.6rem; margin: 1.2rem 0; }
 .plano-op { display: flex; align-items: center; gap: 0.7rem; padding: 0.9rem 1rem; border: 1.5px solid var(--gray-line); border-radius: var(--radius); cursor: pointer; }
