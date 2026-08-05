@@ -330,6 +330,7 @@ a { color: inherit; text-decoration: none; }
 
 /* Revisão do quiz */
 .rev-nota { font-size: 0.82rem; color: var(--gray); margin: 0.4rem 0 0; }
+.rev-desconto { color: #c0392b; font-size: 0.9rem; font-weight: 500; }
 .rev-list { display: flex; flex-direction: column; gap: 0.8rem; margin: 1.3rem 0; }
 .rev-q { border: 1px solid var(--gray-line); border-left-width: 4px; border-radius: var(--radius); padding: 0.8rem 1rem; }
 .rev-q--ok { border-left-color: #2e7d32; }

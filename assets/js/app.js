@@ -561,8 +561,11 @@
     });
     var cabec;
     if (d.aprovado) {
+      var descNota = (d.desconto && d.desconto > 0)
+        ? " <span class='rev-desconto'>(−" + d.desconto + " por " + d.reprovacoes + (d.reprovacoes === 1 ? " tentativa anterior" : " tentativas anteriores") + ")</span>"
+        : "";
       cabec = "<h2 class='app__title'>Subiu ao " + qDegrau + "º degrau! 🔺</h2>" +
-        "<p class='app__lead'>Você acertou <strong>" + d.acertos + " de 10</strong> — <strong>+" + d.pontos + " pontos</strong>. A pedra está mais lisa, Irmão.</p>" +
+        "<p class='app__lead'>Você acertou <strong>" + d.acertos + " de 10</strong> — <strong>+" + d.pontos + " pontos</strong>" + descNota + ". A pedra está mais lisa, Irmão.</p>" +
         "<p class='rev-nota'>Reveja abaixo suas respostas. Este degrau já é seu — a revisão fica disponível quando quiser, mas não é mais possível refazê-lo.</p>";
     } else {
       cabec = "<h2 class='app__title'>Faltou pouco…</h2>" +
